@@ -1,0 +1,106 @@
+# Configuration file for Time Series Analysis Project
+
+# Data Configuration
+data:
+  symbol: "NFLX"  # Stock symbol for Yahoo Finance
+  start_date: "2020-01-01"
+  end_date: "2023-01-01"
+  column: "Close"  # Column to analyze
+  use_synthetic: false  # Use synthetic data instead of real data
+  
+  # Synthetic data parameters (if use_synthetic is true)
+  synthetic:
+    n_samples: 1000
+    trend: 0.01
+    seasonality_period: 30
+    noise_level: 0.1
+    random_state: 42
+
+# Preprocessing Configuration
+preprocessing:
+  scaler_type: "minmax"  # "minmax" or "standard"
+  sequence_length: 30
+  test_size: 0.2
+  random_state: 42
+
+# GRU Model Configuration
+gru_model:
+  input_size: 1
+  hidden_size: 50
+  num_layers: 2
+  dropout: 0.2
+  bidirectional: false
+  learning_rate: 0.001
+  weight_decay: 1e-5
+  epochs: 100
+  batch_size: 32
+  early_stopping_patience: 20
+
+# Forecasting Methods Configuration
+forecasting:
+  methods: ["ARIMA", "Auto-ARIMA", "Prophet", "Naive-last"]
+  forecast_steps: 30
+  
+  # ARIMA parameters
+  arima:
+    order: [1, 1, 1]
+    seasonal_order: null
+  
+  # Auto-ARIMA parameters
+  auto_arima:
+    seasonal: true
+    max_p: 5
+    max_q: 5
+    max_P: 2
+    max_Q: 2
+  
+  # Prophet parameters
+  prophet:
+    seasonality_mode: "additive"
+    yearly_seasonality: true
+    weekly_seasonality: true
+    daily_seasonality: false
+
+# Anomaly Detection Configuration
+anomaly_detection:
+  methods: ["Isolation Forest", "Statistical-zscore", "Statistical-iqr"]
+  
+  # Isolation Forest parameters
+  isolation_forest:
+    contamination: 0.1
+    random_state: 42
+  
+  # Statistical methods parameters
+  statistical:
+    threshold: 3.0
+    window_size: null  # null for global, integer for rolling
+  
+  # Autoencoder parameters
+  autoencoder:
+    encoding_dim: 10
+    hidden_dims: [64, 32]
+    epochs: 100
+    batch_size: 32
+    learning_rate: 0.001
+    threshold_percentile: 95.0
+
+# Visualization Configuration
+visualization:
+  style: "seaborn-v0_8"
+  figsize: [12, 8]
+  save_plots: true
+  plot_format: "png"  # "png", "pdf", "svg"
+  dpi: 300
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/timeseries_analysis.log"
+
+# Output Configuration
+output:
+  models_dir: "models"
+  plots_dir: "plots"
+  results_dir: "results"
+  logs_dir: "logs"
